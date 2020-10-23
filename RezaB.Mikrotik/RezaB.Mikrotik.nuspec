@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.0.0</version>
+    <title>RezaB.Mikrotik</title>
+    <authors>Reza Barzegaran</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <description>Mikrotik API core functions</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>Mikrotik API</tags>
+  </metadata>
+</package>

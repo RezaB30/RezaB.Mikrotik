@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RezaB.Mikrotik", "RezaB.Mikrotik\RezaB.Mikrotik.csproj", "{6F4249CC-CC4E-4800-8C2C-91D0E7831690}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RezaB.Mikrotik.Forms", "RezaB.Mikrotik.Forms\RezaB.Mikrotik.Forms.csproj", "{7FF329A6-CC4B-4E07-B529-5095D95C3FEA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F4249CC-CC4E-4800-8C2C-91D0E7831690} = {6F4249CC-CC4E-4800-8C2C-91D0E7831690}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RezaB.Mikrotik.Extentions", "RezaB.Mikrotik.Extentions\RezaB.Mikrotik.Extentions.csproj", "{0C91E378-6AAD-46DE-ACEE-7AD66F67B847}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RezaB.Mikrotik.Extentions.Forms", "RezaB.Mikrotik.Extentions.Forms\RezaB.Mikrotik.Extentions.Forms.csproj", "{F1E11730-2E8E-4E4A-97EC-55AF2C9FB83F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F4249CC-CC4E-4800-8C2C-91D0E7831690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F4249CC-CC4E-4800-8C2C-91D0E7831690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F4249CC-CC4E-4800-8C2C-91D0E7831690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F4249CC-CC4E-4800-8C2C-91D0E7831690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FF329A6-CC4B-4E07-B529-5095D95C3FEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FF329A6-CC4B-4E07-B529-5095D95C3FEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FF329A6-CC4B-4E07-B529-5095D95C3FEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF329A6-CC4B-4E07-B529-5095D95C3FEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C91E378-6AAD-46DE-ACEE-7AD66F67B847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C91E378-6AAD-46DE-ACEE-7AD66F67B847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C91E378-6AAD-46DE-ACEE-7AD66F67B847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C91E378-6AAD-46DE-ACEE-7AD66F67B847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1E11730-2E8E-4E4A-97EC-55AF2C9FB83F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1E11730-2E8E-4E4A-97EC-55AF2C9FB83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1E11730-2E8E-4E4A-97EC-55AF2C9FB83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1E11730-2E8E-4E4A-97EC-55AF2C9FB83F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
