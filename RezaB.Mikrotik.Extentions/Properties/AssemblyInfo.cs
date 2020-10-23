@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RezaB.Mikrotik.Extentions")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Mikrotik API Extended Functions.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Reza Barzegaran")]
 [assembly: AssemblyProduct("RezaB.Mikrotik.Extentions")]

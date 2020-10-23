@@ -11,5 +11,6 @@
     <releaseNotes>First release.</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>Mikrotik API</tags>
+	<repository type="git" url="https://github.com/masteriss/RezaB.Mikrotik" branch="master" />
   </metadata>
 </package>

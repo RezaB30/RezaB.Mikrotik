@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>1.2.0</version>
+    <title>RezaB.Mikrotik.Extentions</title>
+    <authors>Reza Barzegaran</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <description>Mikrotik API Extended Functions.</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>Mikrotik API Extentions</tags>
+    <repository type="git" url="https://github.com/masteriss/RezaB.Mikrotik" branch="master" />
+    <dependencies>
+      <dependency id="RezaB.Mikrotik" version="1.0.0" />
+    </dependencies>
+  </metadata>
+</package>

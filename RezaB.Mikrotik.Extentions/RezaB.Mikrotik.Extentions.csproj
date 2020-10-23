@@ -11,6 +11,9 @@
     <AssemblyName>RezaB.Mikrotik.Extentions</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+	<PackageDescription>Mikrotik API Extended Functions.</PackageDescription>
+    <RepositoryUrl>https://github.com/masteriss/RezaB.Mikrotik</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
