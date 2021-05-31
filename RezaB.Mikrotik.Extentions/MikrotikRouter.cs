@@ -1805,77 +1805,84 @@ namespace RezaB.Mikrotik.Extentions
             if (!router.InitializeConnection())
                 return;
 
-            // create command to add the NAT rule
-            var parameterList = new List<MikrotikCommandParameter>();
-            parameterList.Add(new MikrotikCommandParameter("chain", "srcnat"));
-            parameterList.Add(new MikrotikCommandParameter("src-address", localIP));
-            parameterList.Add(new MikrotikCommandParameter("protocol", "tcp"));
-            parameterList.Add(new MikrotikCommandParameter("dst-port", "0-65535"));
-            parameterList.Add(new MikrotikCommandParameter("action", "src-nat"));
-            parameterList.Add(new MikrotikCommandParameter("log-prefix", defaultLogPrefix));
-            parameterList.Add(new MikrotikCommandParameter("to-addresses", realIP));
-            parameterList.Add(new MikrotikCommandParameter("to-ports", portRange));
-            // add disabled
-            parameterList.Add(new MikrotikCommandParameter("disabled", "true"));
-            // execute for tcp
             try
             {
-                var response = router.ExecuteCommand("/ip/firewall/nat/add", parameterList.ToArray());
-                if (response.ErrorCode != 0)
+                // create command to add the NAT rule
+                var parameterList = new List<MikrotikCommandParameter>();
+                parameterList.Add(new MikrotikCommandParameter("chain", "srcnat"));
+                parameterList.Add(new MikrotikCommandParameter("src-address", localIP));
+                parameterList.Add(new MikrotikCommandParameter("protocol", "tcp"));
+                parameterList.Add(new MikrotikCommandParameter("dst-port", "0-65535"));
+                parameterList.Add(new MikrotikCommandParameter("action", "src-nat"));
+                parameterList.Add(new MikrotikCommandParameter("log-prefix", defaultLogPrefix));
+                parameterList.Add(new MikrotikCommandParameter("to-addresses", realIP));
+                parameterList.Add(new MikrotikCommandParameter("to-ports", portRange));
+                // add disabled
+                parameterList.Add(new MikrotikCommandParameter("disabled", "true"));
+                // execute for tcp
+                try
                 {
+                    var response = router.ExecuteCommand("/ip/firewall/nat/add", parameterList.ToArray());
+                    if (response.ErrorCode != 0)
+                    {
 
-                    LogError(response.ErrorException, response.ErrorMessage);
-                    errorOccured = true;
-                    return;
+                        LogError(response.ErrorException, response.ErrorMessage);
+                        errorOccured = true;
+                        return;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                errorOccured = true;
-                return;
-            }
-            // change to udp
-            parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "protocol"));
-            parameterList.Add(new MikrotikCommandParameter("protocol", "udp"));
-            // execute for udp
-            try
-            {
-                var response = router.ExecuteCommand("/ip/firewall/nat/add", parameterList.ToArray());
-                if (response.ErrorCode != 0)
+                catch (Exception ex)
                 {
-                    LogError(response.ErrorException, response.ErrorMessage);
+                    LogError(ex);
                     errorOccured = true;
                     return;
                 }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                errorOccured = true;
-                return;
-            }
-            // change to icmp
-            parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "protocol"));
-            parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "dst-port"));
-            parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "to-ports"));
-            parameterList.Add(new MikrotikCommandParameter("protocol", "icmp"));
-            // execute for icmp
-            try
-            {
-                var response = router.ExecuteCommand("/ip/firewall/nat/add", parameterList.ToArray());
-                if (response.ErrorCode != 0)
+                // change to udp
+                parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "protocol"));
+                parameterList.Add(new MikrotikCommandParameter("protocol", "udp"));
+                // execute for udp
+                try
                 {
-                    LogError(response.ErrorException, response.ErrorMessage);
+                    var response = router.ExecuteCommand("/ip/firewall/nat/add", parameterList.ToArray());
+                    if (response.ErrorCode != 0)
+                    {
+                        LogError(response.ErrorException, response.ErrorMessage);
+                        errorOccured = true;
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex);
+                    errorOccured = true;
+                    return;
+                }
+                // change to icmp
+                parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "protocol"));
+                parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "dst-port"));
+                parameterList.Remove(parameterList.FirstOrDefault(par => par.Name == "to-ports"));
+                parameterList.Add(new MikrotikCommandParameter("protocol", "icmp"));
+                // execute for icmp
+                try
+                {
+                    var response = router.ExecuteCommand("/ip/firewall/nat/add", parameterList.ToArray());
+                    if (response.ErrorCode != 0)
+                    {
+                        LogError(response.ErrorException, response.ErrorMessage);
+                        errorOccured = true;
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex);
                     errorOccured = true;
                     return;
                 }
             }
-            catch (Exception ex)
+            finally
             {
-                LogError(ex);
-                errorOccured = true;
-                return;
+                router.Close();
             }
         }
         /// <summary>
@@ -2144,13 +2151,13 @@ namespace RezaB.Mikrotik.Extentions
             var parameterList = new List<MikrotikCommandParameter>();
             parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix));
             parameterList.Add(new MikrotikCommandParameter("address", pair.IP));
-            parameterList.Add(new MikrotikCommandParameter("interface", pair.InterfaceName));
+            parameterList.Add(new MikrotikCommandParameter("list", pair.InterfaceName));
             // add disabled
             parameterList.Add(new MikrotikCommandParameter("disabled", "true"));
             // execute command
             try
             {
-                var response = router.ExecuteCommand("/ip/address/add", parameterList.ToArray());
+                var response = router.ExecuteCommand("/ip/firewall/address-list/add", parameterList.ToArray());
                 if (response.ErrorCode != 0)
                 {
                     LogError(response.ErrorException, response.ErrorMessage);
@@ -2357,7 +2364,7 @@ namespace RezaB.Mikrotik.Extentions
             MikrotikResponse response;
             try
             {
-                response = ExecuteCommand("/ip/address/getall", parameterList.ToArray());
+                response = ExecuteCommand("/ip/firewall/address-list/getall", parameterList.ToArray());
                 if (response.ErrorCode != 0)
                 {
                     LogError(response.ErrorException, response.ErrorMessage);
@@ -2379,7 +2386,7 @@ namespace RezaB.Mikrotik.Extentions
             // send the command
             try
             {
-                response = ExecuteCommand("/ip/address/set", parameterList.ToArray());
+                response = ExecuteCommand("/ip/firewall/address-list/set", parameterList.ToArray());
                 if (response.ErrorCode != 0)
                 {
                     LogError(response.ErrorException, response.ErrorMessage);
@@ -2598,7 +2605,7 @@ namespace RezaB.Mikrotik.Extentions
             MikrotikResponse response;
             try
             {
-                response = ExecuteCommand("/ip/address/getall", parameterList.ToArray());
+                response = ExecuteCommand("/ip/firewall/address-list/getall", parameterList.ToArray());
                 if (response.ErrorCode != 0)
                 {
                     LogError(response.ErrorException, response.ErrorMessage);
@@ -2619,7 +2626,7 @@ namespace RezaB.Mikrotik.Extentions
             // send the command
             try
             {
-                response = ExecuteCommand("/ip/address/remove", parameterList.ToArray());
+                response = ExecuteCommand("/ip/firewall/address-list/remove", parameterList.ToArray());
                 if (response.ErrorCode != 0)
                 {
                     LogError(response.ErrorException, response.ErrorMessage);
