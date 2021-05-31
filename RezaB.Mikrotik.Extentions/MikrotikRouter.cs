@@ -2014,6 +2014,158 @@ namespace RezaB.Mikrotik.Extentions
             return true;
         }
         /// <summary>
+        /// Inserts a collection of NAT rules and address lists for vertical DSL line interfaces.
+        /// </summary>
+        /// <param name="dslRoutingCollection">The parameter collection.</param>
+        /// <returns></returns>
+        public bool InsertVerticalDSLNATRuleset(VerticalDSLParameterCollection dslRoutingCollection)
+        {
+            var dslRoutingTable = new VerticalDSLRoutingTable()
+            {
+                LocalIPSubnets = dslRoutingCollection.LocalIPs,
+                DSLIPs = dslRoutingCollection.DSLLines.Select(l => IPTools.GetUIntValue(l.IP)).ToArray()
+            };
+
+            var ruleset = IPTools.CreateVerticalNATRulesFromDSLRoutingTable(dslRoutingTable);
+            var errorOccured = false;
+            var LineInterfaceDictionary = dslRoutingCollection.DSLLines.ToDictionary(item => item.IP, item => item.InterfaceName);
+            var addressList = new ConcurrentBag<IPInterfacePair>();
+            Parallel.ForEach(ruleset, rule =>
+            {
+                InsertVerticalNATRule(ref errorOccured, rule.LocalIP, rule.RealIP, rule.PortRange);
+                addressList.Add(new IPInterfacePair()
+                {
+                    IP = rule.LocalIP,
+                    InterfaceName = LineInterfaceDictionary[rule.RealIP]
+                });
+            });
+            if (errorOccured)
+            {
+                CleanVerticalNATs(true);
+                return false;
+            }
+
+            if (!InitializeConnection())
+            {
+                return false;
+            }
+
+            var ranges = new List<string>();
+            foreach (var assignedIP in dslRoutingTable.LocalIPSubnets)
+            {
+                // exclude first two and last IP
+                ranges.Add(IPTools.GetStringValue(assignedIP.MinBound + 2) + "-" + IPTools.GetStringValue(assignedIP.MinBound + assignedIP.Count - 2));
+            }
+
+            // check for next available pool no
+            // get current pool names
+            var parameterList = new List<MikrotikCommandParameter>();
+            parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix, MikrotikCommandParameter.ParameterType.Query));
+            // create filters
+            parameterList.Add(new MikrotikCommandParameter(".proplist", ".id,name"));
+            // send the command
+            MikrotikResponse response;
+            try
+            {
+                response = ExecuteCommand("/ip/pool/getall", parameterList.ToArray());
+                if (response.ErrorCode != 0)
+                {
+                    LogError(response.ErrorException, response.ErrorMessage);
+                    CleanVerticalNATs(true);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                CleanVerticalNATs(true);
+                return false;
+            }
+            var queueNoAddition = 0;
+            if (response.DataRows.Count > 0)
+            {
+                if (int.TryParse(response.DataRows.Select(row => row["name"]).Max().Split('_').LastOrDefault(), out queueNoAddition))
+                    queueNoAddition++;
+            }
+
+            for (int i = ranges.Count - 1; i >= 0; i--)
+            {
+                // create query parameters
+                parameterList = new List<MikrotikCommandParameter>();
+                parameterList.Add(new MikrotikCommandParameter("name", defaultVerticalNATIPPoolName + "_new" + "_" + (i + queueNoAddition).ToString("000")));
+                parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix));
+                parameterList.Add(new MikrotikCommandParameter("ranges", ranges[i]));
+                if (i != ranges.Count - 1)
+                    parameterList.Add(new MikrotikCommandParameter("next-pool", defaultVerticalNATIPPoolName + "_new" + "_" + (i + queueNoAddition + 1).ToString("000")));
+                // execute command
+                try
+                {
+                    response = ExecuteCommand("/ip/pool/add", parameterList.ToArray());
+                    if (response.ErrorCode != 0)
+                    {
+                        LogError(response.ErrorException, response.ErrorMessage);
+                        CleanVerticalNATs(true);
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex);
+                    CleanVerticalNATs(true);
+                    return false;
+                }
+            }
+
+            // set address lists
+            if (addressList.Any())
+            {
+                Parallel.ForEach(addressList, currentAddress =>
+                {
+                    InsertAddressList(ref errorOccured, currentAddress);
+                });
+            }
+
+            if (errorOccured)
+            {
+                CleanAddressList(true);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void InsertAddressList(ref bool errorOccured, IPInterfacePair pair)
+        {
+            var router = new MikrotikRouter(Credentials, _timeout);
+            if (!router.InitializeConnection())
+                return;
+
+            // create query parameters
+            var parameterList = new List<MikrotikCommandParameter>();
+            parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix));
+            parameterList.Add(new MikrotikCommandParameter("address", pair.IP));
+            parameterList.Add(new MikrotikCommandParameter("interface", pair.InterfaceName));
+            // add disabled
+            parameterList.Add(new MikrotikCommandParameter("disabled", "true"));
+            // execute command
+            try
+            {
+                var response = router.ExecuteCommand("/ip/address/add", parameterList.ToArray());
+                if (response.ErrorCode != 0)
+                {
+                    LogError(response.ErrorException, response.ErrorMessage);
+                    errorOccured = true;
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                errorOccured = true;
+                return;
+            }
+        }
+        /// <summary>
         /// Enables newly added vertical NAT rules and its IP pool.
         /// </summary>
         /// <returns></returns>
@@ -2183,6 +2335,64 @@ namespace RezaB.Mikrotik.Extentions
             }
 
             return true;
+        }
+        /// <summary>
+        /// Confirms all set values for vertical DSL type.
+        /// </summary>
+        /// <param name="clearOldPools"></param>
+        /// <returns></returns>
+        public bool ConfirmAddressLists(bool clearOldPools = false)
+        {
+            // initialize connection
+            if (!InitializeConnection())
+                return false;
+
+            // create query parameters
+            var parameterList = new List<MikrotikCommandParameter>();
+            parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix, MikrotikCommandParameter.ParameterType.Query));
+            parameterList.Add(new MikrotikCommandParameter("disabled", "true", MikrotikCommandParameter.ParameterType.Query));
+            // create filters
+            parameterList.Add(new MikrotikCommandParameter(".proplist", ".id"));
+            // send the command
+            MikrotikResponse response;
+            try
+            {
+                response = ExecuteCommand("/ip/address/getall", parameterList.ToArray());
+                if (response.ErrorCode != 0)
+                {
+                    LogError(response.ErrorException, response.ErrorMessage);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+
+            // create id list to update
+            var toEditIdList = response.DataRows.Select(row => row[".id"]).ToArray();
+            // create command parameters to update NAT rule
+            parameterList = new List<MikrotikCommandParameter>();
+            parameterList.Add(new MikrotikCommandParameter(".id", string.Join(",", toEditIdList)));
+            parameterList.Add(new MikrotikCommandParameter("disabled", "false"));
+            // send the command
+            try
+            {
+                response = ExecuteCommand("/ip/address/set", parameterList.ToArray());
+                if (response.ErrorCode != 0)
+                {
+                    LogError(response.ErrorException, response.ErrorMessage);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+
+            return ConfirmVerticalNAT(clearOldPools);
         }
 
         private bool CleanVerticalNATs(bool isLastChangeReverse = false)
@@ -2369,6 +2579,76 @@ namespace RezaB.Mikrotik.Extentions
         public bool ReverseVerticalNATChanges()
         {
             return CleanVerticalNATs(true);
+        }
+
+        private bool CleanAddressList(bool isLastChangeReverse = false)
+        {
+            // initialize connection
+            if (!InitializeConnection())
+                return false;
+
+            // create query parameters
+            var disabled = isLastChangeReverse ? "true" : "false";
+            var parameterList = new List<MikrotikCommandParameter>();
+            parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix, MikrotikCommandParameter.ParameterType.Query));
+            parameterList.Add(new MikrotikCommandParameter("disabled", disabled, MikrotikCommandParameter.ParameterType.Query));
+            // create filters
+            parameterList.Add(new MikrotikCommandParameter(".proplist", ".id"));
+            // send the command
+            MikrotikResponse response;
+            try
+            {
+                response = ExecuteCommand("/ip/address/getall", parameterList.ToArray());
+                if (response.ErrorCode != 0)
+                {
+                    LogError(response.ErrorException, response.ErrorMessage);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+
+            // create id list to remove
+            var toRemoveIdList = response.DataRows.Select(row => row[".id"]).ToArray();
+            // create command parameters to remove NAT rule
+            parameterList = new List<MikrotikCommandParameter>();
+            parameterList.Add(new MikrotikCommandParameter(".id", string.Join(",", toRemoveIdList)));
+            // send the command
+            try
+            {
+                response = ExecuteCommand("/ip/address/remove", parameterList.ToArray());
+                if (response.ErrorCode != 0)
+                {
+                    LogError(response.ErrorException, response.ErrorMessage);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+
+            return CleanVerticalNATs(isLastChangeReverse);
+        }
+        /// <summary>
+        /// Clears all of previously added rules (addresses, NAT, pools)
+        /// </summary>
+        /// <returns></returns>
+        public bool ReverseAddressLists()
+        {
+            return CleanAddressList(true);
+        }
+        /// <summary>
+        /// Clears all of added rules (addresses, NAT, pools)
+        /// </summary>
+        /// <returns></returns>
+        public bool CleanAddressLists()
+        {
+            return CleanAddressList(false);
         }
 
         public void Dispose()

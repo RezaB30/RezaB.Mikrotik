@@ -107,6 +107,10 @@
             this.ViewNetmapTableButton = new System.Windows.Forms.Button();
             this.LoadNetmapTableButton = new System.Windows.Forms.Button();
             this.NAT_VerticalTabpage = new System.Windows.Forms.TabPage();
+            this.VerticalNAT_ConfirmReverseGroupbox = new System.Windows.Forms.GroupBox();
+            this.VerticalNAT_ClearAllButton = new System.Windows.Forms.Button();
+            this.VerticalNAT_ReverseButton = new System.Windows.Forms.Button();
+            this.VerticalNAT_ConfirmButton = new System.Windows.Forms.Button();
             this.VerticalNAT_InsertGroupbox = new System.Windows.Forms.GroupBox();
             this.VerticalNAT_InsertButton = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
@@ -119,6 +123,15 @@
             this.VerticalNAT_RealIPStartTextbox = new System.Windows.Forms.TextBox();
             this.VerticalNAT_LocalIPStartTextbox = new System.Windows.Forms.TextBox();
             this.VerticalNAT_LocalIPEndTextbox = new System.Windows.Forms.TextBox();
+            this.NAT_VerticalDSLTabpage = new System.Windows.Forms.TabPage();
+            this.VerticalDSLNAT_ConfirmReverseGroupbox = new System.Windows.Forms.GroupBox();
+            this.VerticalDSLNAT_ClearButton = new System.Windows.Forms.Button();
+            this.VerticalDSLNAT_ReverseButton = new System.Windows.Forms.Button();
+            this.VerticalDSLNAT_ConfirmButton = new System.Windows.Forms.Button();
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox = new System.Windows.Forms.GroupBox();
+            this.VerticalDSLNAT_InsertButton = new System.Windows.Forms.Button();
+            this.VerticalDSLNAT_DSLLineIPsButton = new System.Windows.Forms.Button();
+            this.VerticalDSLNAT_LocalIPPoolsButton = new System.Windows.Forms.Button();
             this.LoginContainerPanel = new System.Windows.Forms.Panel();
             this.CredentialsPanel = new System.Windows.Forms.Panel();
             this.LoginButton = new System.Windows.Forms.Button();
@@ -141,10 +154,6 @@
             this.DisconnectUsernameTextbox = new System.Windows.Forms.TextBox();
             this.OnlineUsersGroupBox = new System.Windows.Forms.GroupBox();
             this.GetOnlineUsersButton = new System.Windows.Forms.Button();
-            this.VerticalNAT_ConfirmReverseGroupbox = new System.Windows.Forms.GroupBox();
-            this.VerticalNAT_ConfirmButton = new System.Windows.Forms.Button();
-            this.VerticalNAT_ReverseButton = new System.Windows.Forms.Button();
-            this.VerticalNAT_ClearAllButton = new System.Windows.Forms.Button();
             this.CommandPanel.SuspendLayout();
             this.NATTabcontrol.SuspendLayout();
             this.NAT_SingleTabpage.SuspendLayout();
@@ -163,15 +172,18 @@
             this.NetmapIPCalculationsGroupbox.SuspendLayout();
             this.NetmapDataGroupbox.SuspendLayout();
             this.NAT_VerticalTabpage.SuspendLayout();
+            this.VerticalNAT_ConfirmReverseGroupbox.SuspendLayout();
             this.VerticalNAT_InsertGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VerticalNAT_PortCountNumeric)).BeginInit();
+            this.NAT_VerticalDSLTabpage.SuspendLayout();
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.SuspendLayout();
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.SuspendLayout();
             this.LoginContainerPanel.SuspendLayout();
             this.CredentialsPanel.SuspendLayout();
             this.LoginStatusPanel.SuspendLayout();
             this.RateLimitsGroupBox.SuspendLayout();
             this.DisconnectUserGroupbox.SuspendLayout();
             this.OnlineUsersGroupBox.SuspendLayout();
-            this.VerticalNAT_ConfirmReverseGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // ResultsTextBox
@@ -204,6 +216,7 @@
             this.NATTabcontrol.Controls.Add(this.NAT_SingleTabpage);
             this.NATTabcontrol.Controls.Add(this.NAT_NetmapTabpage);
             this.NATTabcontrol.Controls.Add(this.NAT_VerticalTabpage);
+            this.NATTabcontrol.Controls.Add(this.NAT_VerticalDSLTabpage);
             this.NATTabcontrol.Location = new System.Drawing.Point(4, 287);
             this.NATTabcontrol.Name = "NATTabcontrol";
             this.NATTabcontrol.SelectedIndex = 0;
@@ -987,6 +1000,48 @@
             this.NAT_VerticalTabpage.Text = "Vertical";
             this.NAT_VerticalTabpage.UseVisualStyleBackColor = true;
             // 
+            // VerticalNAT_ConfirmReverseGroupbox
+            // 
+            this.VerticalNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalNAT_ClearAllButton);
+            this.VerticalNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalNAT_ReverseButton);
+            this.VerticalNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalNAT_ConfirmButton);
+            this.VerticalNAT_ConfirmReverseGroupbox.Location = new System.Drawing.Point(4, 161);
+            this.VerticalNAT_ConfirmReverseGroupbox.Name = "VerticalNAT_ConfirmReverseGroupbox";
+            this.VerticalNAT_ConfirmReverseGroupbox.Size = new System.Drawing.Size(346, 56);
+            this.VerticalNAT_ConfirmReverseGroupbox.TabIndex = 5;
+            this.VerticalNAT_ConfirmReverseGroupbox.TabStop = false;
+            this.VerticalNAT_ConfirmReverseGroupbox.Text = "Confirm/Reverse";
+            // 
+            // VerticalNAT_ClearAllButton
+            // 
+            this.VerticalNAT_ClearAllButton.Location = new System.Drawing.Point(265, 27);
+            this.VerticalNAT_ClearAllButton.Name = "VerticalNAT_ClearAllButton";
+            this.VerticalNAT_ClearAllButton.Size = new System.Drawing.Size(75, 23);
+            this.VerticalNAT_ClearAllButton.TabIndex = 1;
+            this.VerticalNAT_ClearAllButton.Text = "Clear All";
+            this.VerticalNAT_ClearAllButton.UseVisualStyleBackColor = true;
+            this.VerticalNAT_ClearAllButton.Click += new System.EventHandler(this.VerticalNAT_ClearAllButton_Click);
+            // 
+            // VerticalNAT_ReverseButton
+            // 
+            this.VerticalNAT_ReverseButton.Location = new System.Drawing.Point(129, 27);
+            this.VerticalNAT_ReverseButton.Name = "VerticalNAT_ReverseButton";
+            this.VerticalNAT_ReverseButton.Size = new System.Drawing.Size(75, 23);
+            this.VerticalNAT_ReverseButton.TabIndex = 1;
+            this.VerticalNAT_ReverseButton.Text = "Reverse";
+            this.VerticalNAT_ReverseButton.UseVisualStyleBackColor = true;
+            this.VerticalNAT_ReverseButton.Click += new System.EventHandler(this.VerticalNAT_ReverseButton_Click);
+            // 
+            // VerticalNAT_ConfirmButton
+            // 
+            this.VerticalNAT_ConfirmButton.Location = new System.Drawing.Point(6, 27);
+            this.VerticalNAT_ConfirmButton.Name = "VerticalNAT_ConfirmButton";
+            this.VerticalNAT_ConfirmButton.Size = new System.Drawing.Size(75, 23);
+            this.VerticalNAT_ConfirmButton.TabIndex = 0;
+            this.VerticalNAT_ConfirmButton.Text = "Confirm";
+            this.VerticalNAT_ConfirmButton.UseVisualStyleBackColor = true;
+            this.VerticalNAT_ConfirmButton.Click += new System.EventHandler(this.VerticalNAT_ConfirmButton_Click);
+            // 
             // VerticalNAT_InsertGroupbox
             // 
             this.VerticalNAT_InsertGroupbox.Controls.Add(this.VerticalNAT_InsertButton);
@@ -1115,6 +1170,101 @@
             this.VerticalNAT_LocalIPEndTextbox.Size = new System.Drawing.Size(130, 20);
             this.VerticalNAT_LocalIPEndTextbox.TabIndex = 1;
             this.VerticalNAT_LocalIPEndTextbox.Text = "10.0.1.255";
+            // 
+            // NAT_VerticalDSLTabpage
+            // 
+            this.NAT_VerticalDSLTabpage.Controls.Add(this.VerticalDSLNAT_ConfirmReverseGroupbox);
+            this.NAT_VerticalDSLTabpage.Controls.Add(this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox);
+            this.NAT_VerticalDSLTabpage.Location = new System.Drawing.Point(4, 22);
+            this.NAT_VerticalDSLTabpage.Name = "NAT_VerticalDSLTabpage";
+            this.NAT_VerticalDSLTabpage.Size = new System.Drawing.Size(354, 372);
+            this.NAT_VerticalDSLTabpage.TabIndex = 3;
+            this.NAT_VerticalDSLTabpage.Text = "Vertical DSL";
+            this.NAT_VerticalDSLTabpage.UseVisualStyleBackColor = true;
+            // 
+            // VerticalDSLNAT_ConfirmReverseGroupbox
+            // 
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalDSLNAT_ClearButton);
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalDSLNAT_ReverseButton);
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalDSLNAT_ConfirmButton);
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.Location = new System.Drawing.Point(3, 95);
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.Name = "VerticalDSLNAT_ConfirmReverseGroupbox";
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.Size = new System.Drawing.Size(346, 56);
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.TabIndex = 6;
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.TabStop = false;
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.Text = "Confirm/Reverse";
+            // 
+            // VerticalDSLNAT_ClearButton
+            // 
+            this.VerticalDSLNAT_ClearButton.Location = new System.Drawing.Point(265, 27);
+            this.VerticalDSLNAT_ClearButton.Name = "VerticalDSLNAT_ClearButton";
+            this.VerticalDSLNAT_ClearButton.Size = new System.Drawing.Size(75, 23);
+            this.VerticalDSLNAT_ClearButton.TabIndex = 1;
+            this.VerticalDSLNAT_ClearButton.Text = "Clear All";
+            this.VerticalDSLNAT_ClearButton.UseVisualStyleBackColor = true;
+            this.VerticalDSLNAT_ClearButton.Click += new System.EventHandler(this.VerticalDSLNAT_ClearButton_Click);
+            // 
+            // VerticalDSLNAT_ReverseButton
+            // 
+            this.VerticalDSLNAT_ReverseButton.Location = new System.Drawing.Point(129, 27);
+            this.VerticalDSLNAT_ReverseButton.Name = "VerticalDSLNAT_ReverseButton";
+            this.VerticalDSLNAT_ReverseButton.Size = new System.Drawing.Size(75, 23);
+            this.VerticalDSLNAT_ReverseButton.TabIndex = 1;
+            this.VerticalDSLNAT_ReverseButton.Text = "Reverse";
+            this.VerticalDSLNAT_ReverseButton.UseVisualStyleBackColor = true;
+            this.VerticalDSLNAT_ReverseButton.Click += new System.EventHandler(this.VerticalDSLNAT_ReverseButton_Click);
+            // 
+            // VerticalDSLNAT_ConfirmButton
+            // 
+            this.VerticalDSLNAT_ConfirmButton.Location = new System.Drawing.Point(6, 27);
+            this.VerticalDSLNAT_ConfirmButton.Name = "VerticalDSLNAT_ConfirmButton";
+            this.VerticalDSLNAT_ConfirmButton.Size = new System.Drawing.Size(75, 23);
+            this.VerticalDSLNAT_ConfirmButton.TabIndex = 0;
+            this.VerticalDSLNAT_ConfirmButton.Text = "Confirm";
+            this.VerticalDSLNAT_ConfirmButton.UseVisualStyleBackColor = true;
+            this.VerticalDSLNAT_ConfirmButton.Click += new System.EventHandler(this.VerticalDSLNAT_ConfirmButton_Click);
+            // 
+            // VerticalDSLNAT_PoolsAndDSLLinesGroupbox
+            // 
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.Controls.Add(this.VerticalDSLNAT_InsertButton);
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.Controls.Add(this.VerticalDSLNAT_DSLLineIPsButton);
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.Controls.Add(this.VerticalDSLNAT_LocalIPPoolsButton);
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.Location = new System.Drawing.Point(9, 3);
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.Name = "VerticalDSLNAT_PoolsAndDSLLinesGroupbox";
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.Size = new System.Drawing.Size(337, 86);
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.TabIndex = 0;
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.TabStop = false;
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.Text = "IP Pools && DSL Lines";
+            // 
+            // VerticalDSLNAT_InsertButton
+            // 
+            this.VerticalDSLNAT_InsertButton.Location = new System.Drawing.Point(131, 57);
+            this.VerticalDSLNAT_InsertButton.Name = "VerticalDSLNAT_InsertButton";
+            this.VerticalDSLNAT_InsertButton.Size = new System.Drawing.Size(75, 23);
+            this.VerticalDSLNAT_InsertButton.TabIndex = 2;
+            this.VerticalDSLNAT_InsertButton.Text = "Insert";
+            this.VerticalDSLNAT_InsertButton.UseVisualStyleBackColor = true;
+            this.VerticalDSLNAT_InsertButton.Click += new System.EventHandler(this.VerticalDSLNAT_InsertButton_Click);
+            // 
+            // VerticalDSLNAT_DSLLineIPsButton
+            // 
+            this.VerticalDSLNAT_DSLLineIPsButton.Location = new System.Drawing.Point(220, 19);
+            this.VerticalDSLNAT_DSLLineIPsButton.Name = "VerticalDSLNAT_DSLLineIPsButton";
+            this.VerticalDSLNAT_DSLLineIPsButton.Size = new System.Drawing.Size(111, 23);
+            this.VerticalDSLNAT_DSLLineIPsButton.TabIndex = 1;
+            this.VerticalDSLNAT_DSLLineIPsButton.Text = "DSL Line IPs";
+            this.VerticalDSLNAT_DSLLineIPsButton.UseVisualStyleBackColor = true;
+            this.VerticalDSLNAT_DSLLineIPsButton.Click += new System.EventHandler(this.VerticalDSLNAT_DSLLineIPsButton_Click);
+            // 
+            // VerticalDSLNAT_LocalIPPoolsButton
+            // 
+            this.VerticalDSLNAT_LocalIPPoolsButton.Location = new System.Drawing.Point(7, 19);
+            this.VerticalDSLNAT_LocalIPPoolsButton.Name = "VerticalDSLNAT_LocalIPPoolsButton";
+            this.VerticalDSLNAT_LocalIPPoolsButton.Size = new System.Drawing.Size(111, 23);
+            this.VerticalDSLNAT_LocalIPPoolsButton.TabIndex = 0;
+            this.VerticalDSLNAT_LocalIPPoolsButton.Text = "Local IP Pools";
+            this.VerticalDSLNAT_LocalIPPoolsButton.UseVisualStyleBackColor = true;
+            this.VerticalDSLNAT_LocalIPPoolsButton.Click += new System.EventHandler(this.VerticalDSLNAT_LocalIPPoolsButton_Click);
             // 
             // LoginContainerPanel
             // 
@@ -1330,48 +1480,6 @@
             this.GetOnlineUsersButton.UseVisualStyleBackColor = true;
             this.GetOnlineUsersButton.Click += new System.EventHandler(this.GetOnlineUsersButton_Click);
             // 
-            // VerticalNAT_ConfirmReverseGroupbox
-            // 
-            this.VerticalNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalNAT_ClearAllButton);
-            this.VerticalNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalNAT_ReverseButton);
-            this.VerticalNAT_ConfirmReverseGroupbox.Controls.Add(this.VerticalNAT_ConfirmButton);
-            this.VerticalNAT_ConfirmReverseGroupbox.Location = new System.Drawing.Point(4, 161);
-            this.VerticalNAT_ConfirmReverseGroupbox.Name = "VerticalNAT_ConfirmReverseGroupbox";
-            this.VerticalNAT_ConfirmReverseGroupbox.Size = new System.Drawing.Size(346, 56);
-            this.VerticalNAT_ConfirmReverseGroupbox.TabIndex = 5;
-            this.VerticalNAT_ConfirmReverseGroupbox.TabStop = false;
-            this.VerticalNAT_ConfirmReverseGroupbox.Text = "Confirm/Reverse";
-            // 
-            // VerticalNAT_ConfirmButton
-            // 
-            this.VerticalNAT_ConfirmButton.Location = new System.Drawing.Point(6, 27);
-            this.VerticalNAT_ConfirmButton.Name = "VerticalNAT_ConfirmButton";
-            this.VerticalNAT_ConfirmButton.Size = new System.Drawing.Size(75, 23);
-            this.VerticalNAT_ConfirmButton.TabIndex = 0;
-            this.VerticalNAT_ConfirmButton.Text = "Confirm";
-            this.VerticalNAT_ConfirmButton.UseVisualStyleBackColor = true;
-            this.VerticalNAT_ConfirmButton.Click += new System.EventHandler(this.VerticalNAT_ConfirmButton_Click);
-            // 
-            // VerticalNAT_ReverseButton
-            // 
-            this.VerticalNAT_ReverseButton.Location = new System.Drawing.Point(129, 27);
-            this.VerticalNAT_ReverseButton.Name = "VerticalNAT_ReverseButton";
-            this.VerticalNAT_ReverseButton.Size = new System.Drawing.Size(75, 23);
-            this.VerticalNAT_ReverseButton.TabIndex = 1;
-            this.VerticalNAT_ReverseButton.Text = "Reverse";
-            this.VerticalNAT_ReverseButton.UseVisualStyleBackColor = true;
-            this.VerticalNAT_ReverseButton.Click += new System.EventHandler(this.VerticalNAT_ReverseButton_Click);
-            // 
-            // VerticalNAT_ClearAllButton
-            // 
-            this.VerticalNAT_ClearAllButton.Location = new System.Drawing.Point(265, 27);
-            this.VerticalNAT_ClearAllButton.Name = "VerticalNAT_ClearAllButton";
-            this.VerticalNAT_ClearAllButton.Size = new System.Drawing.Size(75, 23);
-            this.VerticalNAT_ClearAllButton.TabIndex = 1;
-            this.VerticalNAT_ClearAllButton.Text = "Clear All";
-            this.VerticalNAT_ClearAllButton.UseVisualStyleBackColor = true;
-            this.VerticalNAT_ClearAllButton.Click += new System.EventHandler(this.VerticalNAT_ClearAllButton_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1411,9 +1519,13 @@
             this.NetmapDataGroupbox.ResumeLayout(false);
             this.NetmapDataGroupbox.PerformLayout();
             this.NAT_VerticalTabpage.ResumeLayout(false);
+            this.VerticalNAT_ConfirmReverseGroupbox.ResumeLayout(false);
             this.VerticalNAT_InsertGroupbox.ResumeLayout(false);
             this.VerticalNAT_InsertGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VerticalNAT_PortCountNumeric)).EndInit();
+            this.NAT_VerticalDSLTabpage.ResumeLayout(false);
+            this.VerticalDSLNAT_ConfirmReverseGroupbox.ResumeLayout(false);
+            this.VerticalDSLNAT_PoolsAndDSLLinesGroupbox.ResumeLayout(false);
             this.LoginContainerPanel.ResumeLayout(false);
             this.CredentialsPanel.ResumeLayout(false);
             this.CredentialsPanel.PerformLayout();
@@ -1423,7 +1535,6 @@
             this.DisconnectUserGroupbox.ResumeLayout(false);
             this.DisconnectUserGroupbox.PerformLayout();
             this.OnlineUsersGroupBox.ResumeLayout(false);
-            this.VerticalNAT_ConfirmReverseGroupbox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1548,6 +1659,15 @@
         private System.Windows.Forms.Button VerticalNAT_ConfirmButton;
         private System.Windows.Forms.Button VerticalNAT_ReverseButton;
         private System.Windows.Forms.Button VerticalNAT_ClearAllButton;
+        private System.Windows.Forms.TabPage NAT_VerticalDSLTabpage;
+        private System.Windows.Forms.GroupBox VerticalDSLNAT_PoolsAndDSLLinesGroupbox;
+        private System.Windows.Forms.Button VerticalDSLNAT_LocalIPPoolsButton;
+        private System.Windows.Forms.Button VerticalDSLNAT_DSLLineIPsButton;
+        private System.Windows.Forms.Button VerticalDSLNAT_InsertButton;
+        private System.Windows.Forms.GroupBox VerticalDSLNAT_ConfirmReverseGroupbox;
+        private System.Windows.Forms.Button VerticalDSLNAT_ClearButton;
+        private System.Windows.Forms.Button VerticalDSLNAT_ReverseButton;
+        private System.Windows.Forms.Button VerticalDSLNAT_ConfirmButton;
     }
 }
 

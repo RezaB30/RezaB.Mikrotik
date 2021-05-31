@@ -36,6 +36,8 @@ namespace RezaB.Mikrotik.Extentions.Forms
         private List<IPPool> localIpPools = new List<IPPool>();
         private List<IPPool> realIPPools = new List<IPPool>();
         private List<NetMapRoutingTable> NetmapTable = null;
+        private List<IPSubnet> localIPSubnets = new List<IPSubnet>();
+        private List<IPInterfacePair> dslLines = new List<IPInterfacePair>();
 
         public MainForm()
         {
@@ -238,7 +240,7 @@ namespace RezaB.Mikrotik.Extentions.Forms
         private void NetmapCalculateRealIPButton_Click(object sender, EventArgs e)
         {
             var localIP = NetmapLocalIPTextbox.Text;
-            var results = NetmapTable.Select(nmt=> new SimpleNetmapRule() { SourceAddress = new IPSubnet() { MinBound = nmt.LocalIPLowerBound, Count = nmt.Count }, ToAddresses = new IPSubnet() { MinBound = nmt.RealIPLowerBound, Count = nmt.Count }, ToPorts = nmt.PortLowerBound + "-" + nmt.PortUpperBound }).FindNetmapRealIP(localIP);
+            var results = NetmapTable.Select(nmt => new SimpleNetmapRule() { SourceAddress = new IPSubnet() { MinBound = nmt.LocalIPLowerBound, Count = nmt.Count }, ToAddresses = new IPSubnet() { MinBound = nmt.RealIPLowerBound, Count = nmt.Count }, ToPorts = nmt.PortLowerBound + "-" + nmt.PortUpperBound }).FindNetmapRealIP(localIP);
             NetmapRealIPResultsLabel.Text = results.RealIP + ":" + results.PortRange;
         }
 
@@ -299,6 +301,57 @@ namespace RezaB.Mikrotik.Extentions.Forms
         private void VerticalNAT_ClearAllButton_Click(object sender, EventArgs e)
         {
             var results = _router.ClearActiveVerticalNATs();
+            ResultsTextBox.Text = results.ToString();
+        }
+
+        private void VerticalDSLNAT_LocalIPPoolsButton_Click(object sender, EventArgs e)
+        {
+            var ipSubnetForm = new IPSubnetListForm();
+            var poolControl = (ListBox)ipSubnetForm.Controls.Find("SubnetListbox", true).FirstOrDefault();
+            poolControl.Items.AddRange(localIPSubnets.ToArray());
+            ipSubnetForm.ShowDialog();
+            var poolItems = (poolControl).Items.OfType<IPSubnet>();
+            localIPSubnets = new List<IPSubnet>();
+            localIPSubnets.AddRange(poolItems);
+        }
+
+        private void VerticalDSLNAT_DSLLineIPsButton_Click(object sender, EventArgs e)
+        {
+            var dslLineIPsForm = new IPInterfaceListForm();
+            var poolControl = (ListBox)dslLineIPsForm.Controls.Find("IPListbox", true).FirstOrDefault();
+            poolControl.Items.AddRange(dslLines.ToArray());
+            dslLineIPsForm.ShowDialog();
+            var poolItems = (poolControl).Items.OfType<IPInterfacePair>();
+            dslLines = new List<IPInterfacePair>();
+            dslLines.AddRange(poolItems);
+        }
+
+        private void VerticalDSLNAT_InsertButton_Click(object sender, EventArgs e)
+        {
+            var results = _router.InsertVerticalDSLNATRuleset(new VerticalDSLParameterCollection()
+            {
+                LocalIPs = localIPSubnets,
+                DSLLines = dslLines
+            });
+
+            ResultsTextBox.Text = results.ToString();
+        }
+
+        private void VerticalDSLNAT_ReverseButton_Click(object sender, EventArgs e)
+        {
+            var results = _router.ReverseAddressLists();
+            ResultsTextBox.Text = results.ToString();
+        }
+
+        private void VerticalDSLNAT_ClearButton_Click(object sender, EventArgs e)
+        {
+            var results = _router.CleanAddressLists();
+            ResultsTextBox.Text = results.ToString();
+        }
+
+        private void VerticalDSLNAT_ConfirmButton_Click(object sender, EventArgs e)
+        {
+            var results = _router.ConfirmAddressLists();
             ResultsTextBox.Text = results.ToString();
         }
     }
