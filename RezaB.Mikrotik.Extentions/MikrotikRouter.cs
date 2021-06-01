@@ -2147,29 +2147,36 @@ namespace RezaB.Mikrotik.Extentions
             if (!router.InitializeConnection())
                 return;
 
-            // create query parameters
-            var parameterList = new List<MikrotikCommandParameter>();
-            parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix));
-            parameterList.Add(new MikrotikCommandParameter("address", pair.IP));
-            parameterList.Add(new MikrotikCommandParameter("list", pair.InterfaceName));
-            // add disabled
-            parameterList.Add(new MikrotikCommandParameter("disabled", "true"));
-            // execute command
             try
             {
-                var response = router.ExecuteCommand("/ip/firewall/address-list/add", parameterList.ToArray());
-                if (response.ErrorCode != 0)
+                // create query parameters
+                var parameterList = new List<MikrotikCommandParameter>();
+                parameterList.Add(new MikrotikCommandParameter("comment", defaultLogPrefix));
+                parameterList.Add(new MikrotikCommandParameter("address", pair.IP));
+                parameterList.Add(new MikrotikCommandParameter("list", pair.InterfaceName));
+                // add disabled
+                parameterList.Add(new MikrotikCommandParameter("disabled", "true"));
+                // execute command
+                try
                 {
-                    LogError(response.ErrorException, response.ErrorMessage);
+                    var response = router.ExecuteCommand("/ip/firewall/address-list/add", parameterList.ToArray());
+                    if (response.ErrorCode != 0)
+                    {
+                        LogError(response.ErrorException, response.ErrorMessage);
+                        errorOccured = true;
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex);
                     errorOccured = true;
                     return;
                 }
             }
-            catch (Exception ex)
+            finally
             {
-                LogError(ex);
-                errorOccured = true;
-                return;
+                router.Close();
             }
         }
         /// <summary>
